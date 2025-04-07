@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # .. Massimo Donelli, January 2025, V1.0 ..
+# .. Massimo Donelli, April   2025, V1.1 - Corrected minor typos in the output log  ..
 # .. Import Library ..
 import os
 import numpy as np
@@ -31,7 +32,7 @@ def InsertData():
     print(Geometry)
     Frequency=input('Frequency of the Electromagnetic Wave [Hz]:')
     print(Frequency)
-    Focal=input('Focal lenght [m]:')
+    Focal=input('Focal length [m]:')
     print(Focal)
     CorrectionPhase=int(input('Correction Phase [even number]:'))
     print(CorrectionPhase)
@@ -39,10 +40,10 @@ def InsertData():
     print(W)
     return [Geometry,ReflectorLens,float(Frequency),float(Focal),int(CorrectionPhase),int(W)]
 # .. Input ..
-# .. Lambda = wavelenght of the EM waves ..
-# .. P = PhaseCorrectionFactor always even P=2 half-wavelenght correcting, 
-# ..     P=4 quarte-wavelenght correcting
-# .. F = Focal lenght of the lens ..
+# .. Lambda = wavelength of the EM waves ..
+# .. P = PhaseCorrectionFactor always even P=2 half-wavelength correcting, 
+# ..     P=4 quarte-wavelength correcting
+# .. F = Focal length of the lens ..
 # .. W = Number of full-waves circular zones ..
 def FresnelZone(Lambda, P, F, W, FlagVisualization):
     OuterRadius = []
@@ -86,7 +87,7 @@ def EpsFresnelZone(Lambda, EpsMax, LensThickness,P, W):
     print(EpsFresnel)   
     print("Thickness:",Lambda/(P*(pow(EpsMax,0.5)-1.0)) ) 
     return(EpsFresnel)    
-# .. This Function create a dielectric lens of fixed Thickness and different dielectric permottivity EPS .. 
+# .. This Function creates a dielectric lens of fixed Thickness and different dielectric permittivity EPS .. 
 # .. It is based on the following work: "3D Printed Dielectric Fresnel Lens" by Shiyu Zhang 
 def FresnelLensCostantThickness(Lambda, P, F, W, EpsMax, LensThickness, FlagVisualization):
     #ColorNames = list(mcolors.TABLEAU_COLORS)
@@ -194,7 +195,7 @@ def FresnelLensCostantEpsConical(Lambda, P, F, W, EpsMax, FlagVisualization, Fla
         plt.axis('equal')
         plt.show()
     return(OuterRadius,TheetHeigh)
-# .. This Function create a dielectric lens/reflector of fixed dielectric permottivity EPS and grooved profiles  .. 
+# .. This Function creates a dielectric lens/reflector of fixed dielectric permittivity EPS and grooved profiles  .. 
 # .. It is based on the following work: "Fresnel Zone Plate and Ordinary Lens Antennas: Comparative Study at Microwave and Terahertz Frequencies"
 # .. by J.M. Rodríguez, Hristo D. Hristov and Walter Grote
 def FresnelLensGrooved(Lambda, P, F, W, EpsMax, FlagVisualization, FlagReflector):
@@ -205,9 +206,10 @@ def FresnelLensGrooved(Lambda, P, F, W, EpsMax, FlagVisualization, FlagReflector
     for I_X_FOR in range(0,TotalZones+1,1):
         Rw = pow((((2*I_X_FOR*F*Lambda)/P) + pow(((I_X_FOR*Lambda)/P),2)),1/2)
         OuterRadius.append(Rw)
-    # .. Estimates the heigh of single step ..
+    # .. Estimates the height of a single step ..
     QuarterWavelength = (Lambda*pow(EpsMax,0.5))/4
     SingleStepHeigh = (Lambda*pow(EpsMax,0.5))/(P*(pow(EpsMax,0.5)-1))
+    print("Single Step Height:",SingleStepHeigh)
     MaxHeigh    =  SingleStepHeigh*(P-1)
     if(FlagVisualization == 1):
         # .. Create a figure panel ..
@@ -273,7 +275,7 @@ if __name__ == '__main__':
     if (ReflectorLens == 'R'):
         if(Geometry == 'M'):
             print("You Choosed Annular metallic reflector strucure")
-            print("Two foci at: +/-",Focal," [m]")
+            print("Two foci at: +/-", Focal," [m]")
             print("Low efficient <40%")
             OuterRadius = FresnelZone(Lambda, CorrectionPhase, Focal, W, FlagVisualization)
             print("Radius:",OuterRadius)
@@ -316,6 +318,7 @@ if __name__ == '__main__':
             print("Position of the metallic background P = ",(Lambda*pow(EpsMax,0.5))/4,"[m] ")
             print("Efficiency > 50%")
             print("Radius:",OuterRadius)
+            print("Step heigh:",TheetHeigh)
             print("Diameter of Lens [m]:", OuterRadius[CorrectionPhase*W]*2)
             print("F/D:",Focal/(OuterRadius[CorrectionPhase*W]*2))
             print("End ...")
@@ -331,6 +334,7 @@ if __name__ == '__main__':
             print("Position of the metallic background P = ",(Lambda*pow(EpsMax,0.5))/4,"[m] ")
             print("Efficiency > 50%")
             print("Radius:",OuterRadius)
+            print("Step heigh:",TheetHeigh)
             print("Diameter of Lens [m]:", OuterRadius[CorrectionPhase*W]*2)
             print("F/D:",Focal/(OuterRadius[CorrectionPhase*W]*2))
             print("End ...")
@@ -365,6 +369,7 @@ if __name__ == '__main__':
             print("Lens substrate thickness = ",Lambda/4,"[m] ")
             print("Efficiency < 50%")
             print("Radius:",OuterRadius)
+            print("Step heigh:",TheetHeigh)
             print("Diameter of Lens [m]:", OuterRadius[CorrectionPhase*W]*2)
             print("F/D:",Focal/(OuterRadius[CorrectionPhase*W]*2))
             print("End ...")
@@ -380,6 +385,7 @@ if __name__ == '__main__':
             print("Position of the metallic background P = ",Lambda/4,"[m] ")
             print("Efficiency > 50%")
             print("Radius:",OuterRadius)
+            print("Step heigh:",TheetHeigh)
             print("Diameter of Lens [m]:", OuterRadius[CorrectionPhase*W]*2)
             print("F/D:",Focal/(OuterRadius[CorrectionPhase*W]*2))
             print("End ...")    
